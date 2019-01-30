@@ -15,17 +15,19 @@ public class BasicActions {
 	Point lastCoords;
 	static final int timeOut = 600000; //10 mins
 	static final int checkInterval = 1000; //in ms
+	Places pl = new Places();
 
 
 	public BasicActions(Robot rob) {
 		robot = rob;
+		robot.delay(3000);
 		lastCoords = MouseInfo.getPointerInfo().getLocation();
 	}
 
 
 	//check if mouse was moved, if yes, halts process
 	void checkUserIntervention() throws Exception {
-		if (lastCoords != MouseInfo.getPointerInfo().getLocation()) {
+		if (!lastCoords.equals(MouseInfo.getPointerInfo().getLocation())) {
 			throw new Exception("User Intervention! Process Halted!");
 		}
 	}
@@ -40,6 +42,11 @@ public class BasicActions {
 		}
 		robot.delay(ms);
 		checkUserIntervention();
+	}
+
+
+	void clickCoord(Point point) throws Exception {
+		clickCoord(point.x, point.y);
 	}
 
 
@@ -58,8 +65,7 @@ public class BasicActions {
 
 
 	void clickPicture(String picture) throws Exception {
-		Point pp = findImageLocation(picture);
-		clickCoord(pp.x, pp.y);
+		clickCoord(findImageLocation(picture));
 	}
 
 
@@ -92,10 +98,13 @@ public class BasicActions {
 
 	Point findImageLocation(String image) throws Exception {
 
-		getScreenshot(5);
-
+		//		getScreenshot(5);
 		//TODO
-		return null;
+
+		if (image == "ClickToContinue" || image == "EndTurn") {
+			wait(3000);
+		}
+		return pl.picPoints.get(image);
 	}
 
 }

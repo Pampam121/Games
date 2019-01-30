@@ -8,8 +8,9 @@ public class FarmMoney {
 		Robot robot = new Robot();
 		MyActions acc = new MyActions(robot);
 
-		acc.openWoO();
-		acc.getToTheodox();
+		//		acc.openWoO();
+		//		acc.getToTheodox();
+		acc.calculateShopsAndCoin();
 		acc.startApprenticeGame();
 		while (true) {
 			acc.playGame();

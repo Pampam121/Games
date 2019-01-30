@@ -1,10 +1,19 @@
 package WarOfOmens;
 
 import java.awt.Desktop;
+import java.awt.Point;
 import java.awt.Robot;
 import java.net.URI;
 
+
 public class MyActions extends BasicActions {
+
+	private Point coin;
+	private Point shop1;
+	private Point shop2;
+	private Point shop3;
+	private Point shop4;
+
 
 	public MyActions(Robot rob) {
 		super(rob);
@@ -31,11 +40,76 @@ public class MyActions extends BasicActions {
 		while (findImageLocation("Theodox") == null) {
 			clickPicture("LeftArrow");
 			wait(3000);
-			counter ++;
-			if (counter > 24){
+			counter++;
+			if (counter > 24) {
 				throw new Exception("Theodox not found!");
 			}
 		}
+
+		calculateShopsAndCoin();
+
+	}
+
+
+	public void calculateShopsAndCoin() throws Exception {
+		Point theo = findImageLocation("Theodox"); //(2900, 890)
+		Point arr = findImageLocation("LeftArrow"); //(3090, 720)
+		Point sp = findImageLocation("SinglePlayer"); //(2450, 380)
+
+		coin = calcCoord(theo, arr, sp, "Coins"); //(2700, 800)
+		shop1 = calcCoord(theo, arr, sp, "Shop1"); //(2150, 500)
+		shop2 = calcCoord(theo, arr, sp, "Shop2"); //(2150, 650)
+		shop3 = calcCoord(theo, arr, sp, "Shop3"); //(2150, 800)
+		shop4 = calcCoord(theo, arr, sp, "Shop4"); //(2150, 950)
+	}
+
+
+	private Point calcCoord(Point theo, Point arr, Point sp, String place) throws Exception {
+		double px = 800. / 1170.;
+		double qx = 990. / 1170.;
+		double rx = 350. / 1170.;
+		double sx;
+		
+		double py = 740. / 880.;
+		double qy = 570. / 880.;
+		double ry = 230. / 880.;
+		double sy;
+		
+		switch (place) {
+			case "Coins":
+				sx = 600. / 1170.;
+				sy = 650. / 880.;
+				break;
+				
+			case "Shop1":
+				sx = 50. / 1170.;
+				sy = 350. / 880.;
+				break;
+				
+			case "Shop2":
+				sx = 50. / 1170.;
+				sy = 500. / 880.;
+				break;
+				
+			case "Shop3":
+				sx = 50. / 1170.;
+				sy = 650. / 880.;
+				break;
+				
+			case "Shop4":
+				sx = 50. / 1170.;
+				sy = 800. / 880.;
+				break;
+
+			default:
+				throw new Exception("Invalid argument in Coordinate Calculation!");
+
+		}
+		
+		double nx = (theo.getX() - arr.getX()) * (sx - rx) / (px - qx) + sp.getX();
+		double ny = (theo.getY() - arr.getY()) * (sy - ry) / (py - qy) + sp.getY();
+
+		return new Point((int) nx, (int) ny);
 
 	}
 
@@ -51,27 +125,22 @@ public class MyActions extends BasicActions {
 
 
 	void clickCoin() throws Exception {
-		int x = 0;
-		int y = 0;
-		//TODO
-		clickCoord(x, y);
+		clickCoord(coin);
 	}
 
 
 	void clickAllShop() throws Exception {
-		int x = 0;
-		int y = 0;
-		//TODO
-		clickCoord(x, y);
+
+		clickCoord(shop1);
 		wait(500);
-		//TODO
-		clickCoord(x, y);
+
+		clickCoord(shop2);
 		wait(500);
-		//TODO
-		clickCoord(x, y);
+
+		clickCoord(shop3);
 		wait(500);
-		//TODO
-		clickCoord(x, y);
+
+		clickCoord(shop4);
 	}
 
 
@@ -109,7 +178,7 @@ public class MyActions extends BasicActions {
 
 
 	void waitForGameEnd() throws Exception {
-		String levelUp = "";
+		String levelUp = "PlayAgain";
 		waitForPictures("PlayAgain", levelUp);
 		if (findImageLocation(levelUp) != null) {
 			clickPicture(levelUp);
