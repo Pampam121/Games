@@ -2,21 +2,21 @@ package WarOfOmens;
 
 import java.awt.MouseInfo;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Robot;
-import java.awt.Toolkit;
 import java.awt.event.InputEvent;
-import java.awt.image.BufferedImage;
 
+import org.sikuli.script.FindFailed;
+import org.sikuli.script.ImagePath;
+import org.sikuli.script.Match;
+import org.sikuli.script.Screen;
 
 public class BasicActions {
 
 	Robot robot;
 	Point lastCoords;
-	static final int timeOut = 600000; //10 mins
-	static final int checkInterval = 1000; //in ms
+	static final int timeOut = 600000; // 10 mins
+	static final int checkInterval = 1000; // in ms
 	Places pl = new Places();
-
 
 	public BasicActions(Robot rob) {
 		robot = rob;
@@ -24,16 +24,14 @@ public class BasicActions {
 		lastCoords = MouseInfo.getPointerInfo().getLocation();
 	}
 
-
-	//check if mouse was moved, if yes, halts process
+	// check if mouse was moved, if yes, halts process
 	void checkUserIntervention() throws Exception {
 		if (!lastCoords.equals(MouseInfo.getPointerInfo().getLocation())) {
 			throw new Exception("User Intervention! Process Halted!");
 		}
 	}
 
-
-	//this check userIntervention every half second
+	// this check userIntervention every half second
 	void wait(int ms) throws Exception {
 		while (ms > checkInterval) {
 			robot.delay(checkInterval);
@@ -44,11 +42,9 @@ public class BasicActions {
 		checkUserIntervention();
 	}
 
-
 	void clickCoord(Point point) throws Exception {
 		clickCoord(point.x, point.y);
 	}
-
 
 	void clickCoord(int xCoord, int yCoord) throws Exception {
 		checkUserIntervention();
@@ -63,48 +59,54 @@ public class BasicActions {
 		checkUserIntervention();
 	}
 
-
 	void clickPicture(String picture) throws Exception {
 		clickCoord(findImageLocation(picture));
+		System.out.println("Picture " + picture + " clicked!");
+	}
+	
+	void waitAndClickPicture(String picture) throws Exception {
+		String picture2 = picture+"2";
+		clickPicture(waitForPictures(picture, picture2));
 	}
 
-
-	void waitForPictures(String... picture) throws Exception {
+	String waitForPictures(String... picture) throws Exception {
 		int time = 0;
 		int ms = 1000;
+		System.out.print("Waiting...   ");
 		while (time < timeOut) {
 
 			wait(ms);
 			time += ms;
 
 			for (String pic : picture) {
-				if (findImageLocation(pic) != null)
-					return;
+				if (findImageLocation(pic) != null) {
+					System.out.println(ms + " ms");
+					return pic;
+				}
 			}
 		}
+		System.out.println("");
+		throw new Exception("Timeout");
 
 	}
 
+	Point findImageLocation(String image) {
 
-	private BufferedImage getScreenshot(int timeToWait) throws Exception {
+		Point pp = new Point();
+		Screen screen = new Screen();
+		String target = image + ".png";
+		Match m;
+		ImagePath.add("resources/WarOfOmens");
 
-		wait(timeToWait);
-
-		Rectangle rec = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
-
-		return robot.createScreenCapture(rec);
-	}
-
-
-	Point findImageLocation(String image) throws Exception {
-
-		//		getScreenshot(5);
-		//TODO
-
-		if (image == "ClickToContinue" || image == "EndTurn") {
-			wait(3000);
+		try {
+			m = screen.find(target);
+		} catch (FindFailed e) {
+			return null;
 		}
-		return pl.picPoints.get(image);
+
+		pp.setLocation(m.getTarget().getPoint());
+		System.out.println("Picture " + image + " found!");
+		return pp;
 	}
 
 }

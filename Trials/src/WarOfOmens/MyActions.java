@@ -29,26 +29,34 @@ public class MyActions extends BasicActions {
 		checkUserIntervention();
 
 		// scroll down
-		clickPicture("WoOinKong");
-		robot.mouseWheel(3);
+		waitAndClickPicture("WoOinKong");
+		robot.mouseWheel(4);
 		System.out.println("Scrolled down");
 		checkUserIntervention();
 		
-		waitForPictures("LeftArrow", "JavaDownload");
+		if (waitForPictures("LeftArrow", "LeftArrow2", "JavaDownload") == "JavaDownload") {
+			clickPicture("JavaDownload");
+			wait(2000);
+			clickPicture("JavaEngedely");
+			waitForPictures("LeftArrow", "LeftArrow2");
+		}
 
 	}
 
 
 	public void getToTheodox() throws Exception {
 		int counter = 0;
-		while (findImageLocation("Theodox") == null) {
-			clickPicture("LeftArrow");
+		System.out.print("Looking for Theodox... ");
+		while (findImageLocation("Theodox") == null && findImageLocation("Theodox2") == null) {
+			waitAndClickPicture("LeftArrow");
 			wait(3000);
 			counter++;
-			if (counter > 24) {
+			System.out.print(counter+" ");
+			if (counter > 32) {
 				throw new Exception("Theodox not found!");
 			}
 		}
+		System.out.println("Found!");
 
 		calculateShopsAndCoin();
 
@@ -56,9 +64,9 @@ public class MyActions extends BasicActions {
 
 
 	public void calculateShopsAndCoin() throws Exception {
-		Point theo = findImageLocation("Theodox"); //(2900, 890)
-		Point arr = findImageLocation("LeftArrow"); //(3090, 720)
-		Point sp = findImageLocation("SinglePlayer"); //(2450, 380)
+		Point theo = findImageLocation("Theodox2"); //(2900, 890)
+		Point arr = findImageLocation("LeftArrow2"); //(3090, 720)
+		Point sp = findImageLocation("SinglePlayer2"); //(2450, 380)
 
 		coin = calcCoord(theo, arr, sp, "Coins"); //(2700, 800)
 		shop1 = calcCoord(theo, arr, sp, "Shop1"); //(2150, 500)
@@ -119,11 +127,9 @@ public class MyActions extends BasicActions {
 
 
 	public void startApprenticeGame() throws Exception {
-		clickPicture("SinglePlayer");
-		wait(3000);
-		clickPicture("Apprentice");
-		waitForPictures("ClickToContinue");
-		clickPicture("ClickToContinue");
+		waitAndClickPicture("SinglePlayer");
+		waitAndClickPicture("Apprentice");
+		waitAndClickPicture("ClickToContinue");
 
 	}
 
@@ -150,10 +156,10 @@ public class MyActions extends BasicActions {
 
 	public void playGame() throws Exception {
 
-		waitForPictures("EndTurn");
+		waitForPictures("EndTurn", "EndTurn2");
 		clickCoin();
 
-		while (true) {
+		while (checkGameEnd()) {
 
 			clickCoin();
 			wait(500);
@@ -163,38 +169,34 @@ public class MyActions extends BasicActions {
 			wait(1000);
 
 			clickAllShop();
-			wait(3000);
 
-			try {
-				clickPicture("EndTurn");
-			}
-			catch (Exception e) {
-				break;
-			}
-			wait(5000);
-			waitForPictures("EndTurn");
+			wait(3000);
+			waitForPictures("EndTurn", "EndTurn2");
 
 		}
-
-		waitForGameEnd();
 
 	}
 
 
-	void waitForGameEnd() throws Exception {
+	boolean checkGameEnd() throws Exception {
+		if(findImageLocation("PlayAgain") == null) {
+			return false;
+		}
+		if(findImageLocation("PlayAgain2") == null) {
+			return false;
+		}
+		return true;
+		
+	}
+
+
+	public void startPlayAgain() throws Exception {
 		String levelUp = "PlayAgain";
-		waitForPictures("PlayAgain", levelUp);
-		if (findImageLocation(levelUp) != null) {
+		if(waitForPictures("PlayAgain","PlayAgain2", levelUp) == levelUp){
 			clickPicture(levelUp);
 		}
-		waitForPictures("PlayAgain");
-	}
-
-
-	public void clickPlayAgain() throws Exception {
-		clickPicture("PlayAgain");
-		waitForPictures("ClickToContinue");
-		clickPicture("ClickToContinue");
+		waitAndClickPicture("PlayAgain");
+		waitAndClickPicture("ClickToContinue");
 	}
 
 }
