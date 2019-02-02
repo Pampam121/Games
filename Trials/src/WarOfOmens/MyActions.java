@@ -25,12 +25,16 @@ public class MyActions extends BasicActions {
 		if (Desktop.isDesktopSupported()) {
 			Desktop.getDesktop().browse(new URI("https://www.kongregate.com/games/FifthColumnGames/war-of-omens"));
 		}
+		System.out.println("Game opened");
 		checkUserIntervention();
 
 		// scroll down
 		clickPicture("WoOinKong");
 		robot.mouseWheel(3);
+		System.out.println("Scrolled down");
 		checkUserIntervention();
+		
+		waitForPictures("LeftArrow", "JavaDownload");
 
 	}
 
