@@ -61,7 +61,7 @@ public class BasicActions {
 
 	void clickPicture(String picture) throws Exception {
 		clickCoord(findImageLocation(picture));
-		System.out.println("Picture " + picture + " clicked!");
+//		System.out.println("Picture " + picture + " clicked!");
 	}
 	
 	void waitAndClickPicture(String picture) throws Exception {
@@ -72,7 +72,7 @@ public class BasicActions {
 	String waitForPictures(String... picture) throws Exception {
 		int time = 0;
 		int ms = 1000;
-		System.out.print("Waiting...   ");
+//		System.out.print("Waiting...   ");
 		while (time < timeOut) {
 
 			wait(ms);
@@ -80,7 +80,7 @@ public class BasicActions {
 
 			for (String pic : picture) {
 				if (findImageLocation(pic) != null) {
-					System.out.println(ms + " ms");
+//					System.out.println(ms + " ms");
 					return pic;
 				}
 			}
@@ -105,7 +105,7 @@ public class BasicActions {
 		}
 
 		pp.setLocation(m.getTarget().getPoint());
-		System.out.println("Picture " + image + " found!");
+//		System.out.println("Picture " + image + " found!");
 		return pp;
 	}
 

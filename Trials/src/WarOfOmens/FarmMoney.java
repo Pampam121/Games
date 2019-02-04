@@ -17,7 +17,7 @@ public class FarmMoney {
 		int counter = 1;
 		while (true) {
 			acc.playGame();
-			System.out.print("Games played... " + counter + "\r");
+			System.out.println("Games played " + counter + "\r");
 			acc.startPlayAgain();
 			counter++;
 		}

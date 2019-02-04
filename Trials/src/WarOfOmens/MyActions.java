@@ -39,6 +39,7 @@ public class MyActions extends BasicActions {
 			wait(2000);
 			clickPicture("JavaEngedely");
 			waitForPictures("LeftArrow", "LeftArrow2");
+			System.out.println("Permission given to Java");
 		}
 
 	}
@@ -156,7 +157,7 @@ public class MyActions extends BasicActions {
 
 	public void playGame() throws Exception {
 
-		waitForPictures("EndTurn", "EndTurn2");
+		Point endTurn = findImageLocation(waitForPictures("EndTurn", "EndTurn2"));
 		clickCoin();
 
 		while (checkGameEnd()) {
@@ -170,8 +171,10 @@ public class MyActions extends BasicActions {
 
 			clickAllShop();
 
-			wait(3000);
-			waitForPictures("EndTurn", "EndTurn2");
+			wait(1000);
+			clickCoord(endTurn);
+			
+			wait(6000);
 
 		}
 
@@ -179,10 +182,13 @@ public class MyActions extends BasicActions {
 
 
 	boolean checkGameEnd() throws Exception {
-		if(findImageLocation("PlayAgain") == null) {
+		if(findImageLocation("PlayAgain") != null) {
 			return false;
 		}
-		if(findImageLocation("PlayAgain2") == null) {
+		if(findImageLocation("PlayAgain2") != null) {
+			return false;
+		}
+		if(findImageLocation("LevelUp") != null) {
 			return false;
 		}
 		return true;
@@ -191,9 +197,10 @@ public class MyActions extends BasicActions {
 
 
 	public void startPlayAgain() throws Exception {
-		String levelUp = "PlayAgain";
+		String levelUp = "LevelUp";
 		if(waitForPictures("PlayAgain","PlayAgain2", levelUp) == levelUp){
 			clickPicture(levelUp);
+			System.out.println("Level up!");
 		}
 		waitAndClickPicture("PlayAgain");
 		waitAndClickPicture("ClickToContinue");
