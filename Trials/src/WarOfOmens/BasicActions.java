@@ -27,7 +27,7 @@ public class BasicActions {
 	// check if mouse was moved, if yes, halts process
 	void checkUserIntervention() throws Exception {
 		if (!lastCoords.equals(MouseInfo.getPointerInfo().getLocation())) {
-			throw new Exception("User Intervention! Process Halted!");
+			throw new UserInterceptionException();
 		}
 	}
 

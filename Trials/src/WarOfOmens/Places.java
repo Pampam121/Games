@@ -1,6 +1,5 @@
 package WarOfOmens;
 
-import java.awt.AWTException;
 import java.awt.Point;
 import java.awt.Robot;
 import java.util.HashMap;
@@ -27,11 +26,23 @@ public class Places {
 	}
 
 
-	public static void main(String[] args) throws AWTException {
+	public static void main(String[] args) throws Exception {
+		System.out.println("Start!");
 		Robot robot = new Robot();
 		MyActions acc = new MyActions(robot);
 
-		robot.mouseMove(2100, 150);
+		while (true) {
+			System.out.println("Start!");
+			try {
+				acc.wait(4000);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Stuff!");
+			}
+			acc.wait(3000);
+		}
+
 
 	}
 
