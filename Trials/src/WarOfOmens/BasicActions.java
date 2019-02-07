@@ -4,11 +4,15 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
+import java.util.concurrent.TimeoutException;
 
 import org.sikuli.script.FindFailed;
 import org.sikuli.script.ImagePath;
 import org.sikuli.script.Match;
 import org.sikuli.script.Screen;
+
+import WarOfOmens.InterceptionException.Interruption;
+
 
 public class BasicActions {
 
@@ -16,7 +20,8 @@ public class BasicActions {
 	Point lastCoords;
 	static final int timeOut = 600000; // 10 mins
 	static final int checkInterval = 1000; // in ms
-	Places pl = new Places();
+	boolean gameLoaded = false;
+
 
 	public BasicActions(Robot rob) {
 		robot = rob;
@@ -24,33 +29,62 @@ public class BasicActions {
 		lastCoords = MouseInfo.getPointerInfo().getLocation();
 	}
 
+
 	// check if mouse was moved, if yes, halts process
-	void checkUserIntervention() throws Exception {
+	void checkUserIntervention() throws InterceptionException {
 		if (!lastCoords.equals(MouseInfo.getPointerInfo().getLocation())) {
-			throw new UserInterceptionException();
+			throw new InterceptionException(Interruption.USER);
 		}
 	}
 
-	// this check userIntervention every half second
-	void wait(int ms) throws Exception {
+
+	private void checkKongregateAndInternet() throws InterceptionException {
+		if (findImageLocation(Pictures.reconnectMe) != null) {
+			System.out.println("Kongregate Connection Error!");
+			throw new InterceptionException(Interruption.KONGREGATE);
+		}
+		if (findImageLocation(Pictures.gameLoaded) == null) {
+			throw new InterceptionException(Interruption.INTERNET);
+		}
+	}
+
+
+	//check mouse move, and if game should be loaded, if it's still loaded
+	void checkAllInterruption() throws InterceptionException {
+		checkUserIntervention();
+		if (gameLoaded) {
+			checkKongregateAndInternet();
+		}
+	}
+
+
+	// this check userIntervention every second
+	void wait(int ms) throws InterceptionException {
 		while (ms > checkInterval) {
 			robot.delay(checkInterval);
-			checkUserIntervention();
+			checkAllInterruption();
 			ms -= checkInterval;
 		}
 		robot.delay(ms);
-		checkUserIntervention();
+		checkAllInterruption();
 	}
 
-	void clickCoord(Point point) throws Exception {
+
+	void clickCoord(Point point) throws InterceptionException {
 		clickCoord(point.x, point.y);
 	}
 
-	void clickCoord(int xCoord, int yCoord) throws Exception {
-		checkUserIntervention();
 
+	void moveCoord(int xCoord, int yCoord) {
 		robot.mouseMove(xCoord, yCoord);
 		lastCoords = MouseInfo.getPointerInfo().getLocation();
+	}
+
+
+	void clickCoord(int xCoord, int yCoord) throws InterceptionException {
+		checkUserIntervention();
+
+		moveCoord(xCoord, yCoord);
 		wait(500);
 
 		robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
@@ -59,20 +93,22 @@ public class BasicActions {
 		checkUserIntervention();
 	}
 
-	void clickPicture(String picture) throws Exception {
+
+	void clickPicture(String picture) throws InterceptionException {
 		clickCoord(findImageLocation(picture));
-//		System.out.println("Picture " + picture + " clicked!");
-	}
-	
-	void waitAndClickPicture(String picture) throws Exception {
-		String picture2 = picture+"2";
-		clickPicture(waitForPictures(picture, picture2));
+		//		System.out.println("Picture " + picture + " clicked!");
 	}
 
-	String waitForPictures(String... picture) throws Exception {
+
+	void waitAndClickPicture(String picture) throws InterceptionException, TimeoutException {
+		clickPicture(waitForPictures(picture));
+	}
+
+
+	String waitForPictures(String... picture) throws InterceptionException, TimeoutException {
 		int time = 0;
 		int ms = 1000;
-//		System.out.print("Waiting...   ");
+		//		System.out.print("Waiting...   ");
 		while (time < timeOut) {
 
 			wait(ms);
@@ -80,15 +116,16 @@ public class BasicActions {
 
 			for (String pic : picture) {
 				if (findImageLocation(pic) != null) {
-//					System.out.println(ms + " ms");
+					//					System.out.println(ms + " ms");
 					return pic;
 				}
 			}
 		}
 		System.out.println("");
-		throw new Exception("Timeout");
+		throw new TimeoutException();
 
 	}
+
 
 	Point findImageLocation(String image) {
 
@@ -100,12 +137,13 @@ public class BasicActions {
 
 		try {
 			m = screen.find(target);
-		} catch (FindFailed e) {
+		}
+		catch (FindFailed e) {
 			return null;
 		}
 
 		pp.setLocation(m.getTarget().getPoint());
-//		System.out.println("Picture " + image + " found!");
+		//		System.out.println("Picture " + image + " found!");
 		return pp;
 	}
 

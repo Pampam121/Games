@@ -3,7 +3,13 @@ package WarOfOmens;
 import java.awt.Desktop;
 import java.awt.Point;
 import java.awt.Robot;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.concurrent.TimeoutException;
+
+import javax.naming.directory.InvalidAttributeValueException;
 
 
 public class MyActions extends BasicActions {
@@ -20,7 +26,16 @@ public class MyActions extends BasicActions {
 	}
 
 
-	public void openWoO() throws Exception {
+	/**
+	 * Open WarOfOmens in Chrome, gives Java Permission and closes pop-ups in game
+	 * 
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 * @throws InterceptionException
+	 * @throws TimeoutException
+	 * 
+	 */
+	public void openWoO() throws IOException, URISyntaxException, InterceptionException, TimeoutException {
 		//open WarOfOmens in Chrome
 		if (Desktop.isDesktopSupported()) {
 			Desktop.getDesktop().browse(new URI("https://www.kongregate.com/games/FifthColumnGames/war-of-omens"));
@@ -29,64 +44,88 @@ public class MyActions extends BasicActions {
 		checkUserIntervention();
 
 		// scroll down
-		waitAndClickPicture("WoOinKong");
+		waitAndClickPicture(Pictures.woOinKong);
 		robot.mouseWheel(4);
 		System.out.println("Scrolled down");
 		checkUserIntervention();
 
+		waitForPictures(Pictures.gameLoaded);
 		getToMainScreen();
+		gameLoaded = true;
 
 	}
 
 
-	void getToMainScreen() throws Exception {
-		final String javaPermissonNeed = "JavaDownload";
-		final String newsPopUp = "";
-		final String questPopUp = "";
-		final String weekendPopUp = "";
-		final String homeScreen = "LeftArrow2";
+	/**
+	 * Closes Pop-ups
+	 * 
+	 * @throws InterceptionException
+	 * @throws TimeoutException
+	 */
+	void getToMainScreen() throws InterceptionException, TimeoutException {
 
-		String loadedScreenType = waitForPictures(javaPermissonNeed, newsPopUp, questPopUp, weekendPopUp, homeScreen);
+		String loadedScreenType = waitForPictures(Pictures.javaPermissonNeed, Pictures.newsPopUp, Pictures.questPopUp, Pictures.weekendPopUp, Pictures.homeScreen);
 
 		switch (loadedScreenType) {
-			case javaPermissonNeed:
-				clickPicture(javaPermissonNeed);
+			//in case permission needed, give it
+			case Pictures.javaPermissonNeed:
+				clickPicture(Pictures.javaPermissonNeed);
 				wait(2000);
-				clickPicture("JavaEngedely");
+				clickPicture(Pictures.javaEngedely);
 				wait(1000);
 				System.out.println("Permission given to Java");
 				getToMainScreen();
+				break;
 
-			case questPopUp:
-				clickPicture("Collect");
+			//in case Collecting is possible, do so
+			case Pictures.questPopUp:
+				clickPicture(Pictures.collect);
 				wait(2000);
-				clickPicture(questPopUp);
+				clickPicture(Pictures.questPopUp);
 				wait(1000);
 				System.out.println("Daily collected");
 				getToMainScreen();
-
-			case homeScreen:
 				break;
 
+			//this is the only way to exit the loop
+			case Pictures.homeScreen:
+				return;
+
+			//close whatever we find
 			default:
 				clickPicture(loadedScreenType);
 				wait(1000);
 				System.out.println(loadedScreenType + " closed");
 				getToMainScreen();
+				break;
 		}
 	}
 
 
-	public void getToCharacter(String characterName) throws Exception {
+	/**
+	 * Navigates on main screen to given character's page
+	 * 
+	 * @param characterName
+	 * @throws InterceptionException
+	 * @throws TimeoutException
+	 *             in case character could not be found in 32 tries
+	 * @throws InvalidAttributeValueException
+	 *             in case coins and shop coordinates could not be calculated
+	 */
+	public void getToCharacter(String characterName) throws InterceptionException, TimeoutException, InvalidAttributeValueException {
+		//for only trying 2*all character = 32
 		int counter = 0;
 		System.out.print("Looking for " + characterName);
 		while (findImageLocation(characterName) == null) {
-			waitAndClickPicture("LeftArrow");
+			waitAndClickPicture(Pictures.leftArrow);
+			//move away mouse so arrow does not change to green:
+			moveCoord(0, 0);
+			//wait for new character page to load
 			wait(3000);
 			counter++;
 			System.out.print(counter + " ");
 			if (counter > 32) {
-				throw new Exception(characterName + " not found!");
+				throw new TimeoutException(characterName + " not found!");
 			}
 		}
 		System.out.println("Found in " + counter + " tries!");
@@ -96,10 +135,18 @@ public class MyActions extends BasicActions {
 	}
 
 
-	void calculateShopsAndCoin(String characterName) throws Exception {
+	/**
+	 * Calculates shop and coin coordinates, because they cannot be done throw picture recognition.
+	 * 
+	 * @param characterName
+	 *            Needs 3 point of reference to find correct resolution:
+	 *            one is the character name, one is the location of left arrow, one is the location of single Player
+	 * @throws InvalidAttributeValueException
+	 */
+	void calculateShopsAndCoin(String characterName) throws InvalidAttributeValueException {
 		Point theo = findImageLocation(characterName); //(2900, 890)
-		Point arr = findImageLocation("LeftArrow2"); //(3090, 720)
-		Point sp = findImageLocation("SinglePlayer2"); //(2450, 380)
+		Point arr = findImageLocation(Pictures.leftArrow); //(3090, 720)
+		Point sp = findImageLocation(Pictures.singlePlayer); //(2450, 380)
 
 		coin = calcCoord(theo, arr, sp, "Coins"); //(2700, 800)
 		shop1 = calcCoord(theo, arr, sp, "Shop1"); //(2150, 500)
@@ -109,7 +156,7 @@ public class MyActions extends BasicActions {
 	}
 
 
-	private Point calcCoord(Point theo, Point arr, Point sp, String place) throws Exception {
+	private Point calcCoord(Point theo, Point arr, Point sp, String place) throws InvalidAttributeValueException {
 		double px = 800. / 1170.;
 		double qx = 990. / 1170.;
 		double rx = 350. / 1170.;
@@ -147,7 +194,7 @@ public class MyActions extends BasicActions {
 				break;
 
 			default:
-				throw new Exception("Invalid argument in Coordinate Calculation!");
+				throw new InvalidAttributeValueException("Invalid argument in Coordinate Calculation!");
 
 		}
 
@@ -159,20 +206,28 @@ public class MyActions extends BasicActions {
 	}
 
 
-	public void startSinglePlayerGame(String gameLevel) throws Exception {
-		waitAndClickPicture("SinglePlayer");
+	/**
+	 * Navigates and starts a new game of given level
+	 * 
+	 * @param gameLevel
+	 * @throws InterceptionException
+	 * @throws TimeoutException
+	 *             in case of more than 10 mins of waiting for any picture to load
+	 */
+	public void startSinglePlayerGame(String gameLevel) throws InterceptionException, TimeoutException {
+		waitAndClickPicture(Pictures.singlePlayer);
 		waitAndClickPicture(gameLevel);
-		waitAndClickPicture("ClickToContinue");
+		waitAndClickPicture(Pictures.clickToContinue);
 
 	}
 
 
-	void clickCoin() throws Exception {
+	private void clickCoin() throws InterceptionException {
 		clickCoord(coin);
 	}
 
 
-	void clickAllShop() throws Exception {
+	private void clickAllShop() throws InterceptionException {
 
 		clickCoord(shop1);
 		wait(500);
@@ -187,9 +242,17 @@ public class MyActions extends BasicActions {
 	}
 
 
-	public void playGame() throws Exception {
+	/**
+	 * Plays one game, and checks when game ended, or interruption occurred
+	 * 
+	 * @throws InterceptionException
+	 * @throws TimeoutException
+	 *             if game does not load in 10 mins, or a single game lasts longer than 30 mins
+	 */
+	public void playGame() throws InterceptionException, TimeoutException {
 
-		Point endTurn = findImageLocation(waitForPictures("EndTurn", "EndTurn2"));
+		int timer = 0; //counts waiting time in s
+		Point endTurn = findImageLocation(waitForPictures(Pictures.endTurn));
 		clickCoin();
 
 		while (checkGameEnd()) {
@@ -207,20 +270,21 @@ public class MyActions extends BasicActions {
 			clickCoord(endTurn);
 
 			wait(6000);
+			timer += 9;
+			if (timer > 30 * 60) {
+				throw new TimeoutException("Game lasted longer than 30 mins!");
+			}
 
 		}
 
 	}
 
 
-	boolean checkGameEnd() throws Exception {
-		if (findImageLocation("PlayAgain") != null) {
+	private boolean checkGameEnd() {
+		if (findImageLocation(Pictures.playAgain) != null) {
 			return false;
 		}
-		if (findImageLocation("PlayAgain2") != null) {
-			return false;
-		}
-		if (findImageLocation("LevelUp") != null) {
+		if (findImageLocation(Pictures.levelUp) != null) {
 			return false;
 		}
 		return true;
@@ -228,14 +292,41 @@ public class MyActions extends BasicActions {
 	}
 
 
-	public void startPlayAgain() throws Exception {
-		String levelUp = "LevelUp";
-		if (waitForPictures("PlayAgain", "PlayAgain2", levelUp) == levelUp) {
-			clickPicture(levelUp);
+	/**
+	 * Handles levelUp pop up and starts a new game of the same kind
+	 * 
+	 * @throws InterceptionException
+	 * @throws TimeoutException
+	 *             in case pictures do not load in 10 mins
+	 */
+	public void startPlayAgain() throws InterceptionException, TimeoutException {
+		if (waitForPictures(Pictures.playAgain, Pictures.levelUp) == Pictures.levelUp) {
+			clickPicture(Pictures.levelUp);
 			System.out.println("Level up!");
 		}
-		waitAndClickPicture("PlayAgain");
-		waitAndClickPicture("ClickToContinue");
+		waitAndClickPicture(Pictures.playAgain);
+		waitAndClickPicture(Pictures.clickToContinue);
+	}
+
+
+	/**
+	 * Waits 10 mins and closes Chrome
+	 * 
+	 * @throws InterruptedException
+	 */
+	public void setNewGame() throws InterruptedException {
+		gameLoaded = false;
+		Thread.sleep(BasicActions.timeOut);
+
+		//close Chrome:
+		robot.keyPress(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_SHIFT);
+		robot.keyPress(KeyEvent.VK_Q);
+		robot.delay(200);
+		robot.keyRelease(KeyEvent.VK_Q);
+		robot.keyRelease(KeyEvent.VK_CONTROL);
+		robot.keyRelease(KeyEvent.VK_SHIFT);
+
 	}
 
 }

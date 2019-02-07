@@ -1,14 +1,17 @@
 package WarOfOmens;
 
 import java.awt.Robot;
-import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.concurrent.TimeoutException;
+
+import javax.naming.directory.InvalidAttributeValueException;
 
 
 public class FarmMoney {
 
-	static Robot robot;
-	static MyActions acc;
-	static int gamesPlayed = 1;
+	static String gameLevel = Pictures.apprentice;
+	static String character = Pictures.theodox;
 
 
 	public static void main(String[] args) throws Exception {
@@ -18,33 +21,32 @@ public class FarmMoney {
 
 		while (true) {
 			try {
-				//play the game until intercepted
+				//play the game until interrupted
 				openAndFarm();
 			}
-			catch (UserInterceptionException e) {
+			catch (InterceptionException e) {
 				e.printStackTrace();
+				System.out.println("Waiting 10 mins and starting over");
+			}
+			catch (TimeoutException e) {
+				e.printStackTrace();
+				System.out.println("Waiting 10 mins and startin over");
 			}
 			//wait 10 mins and start over
-
-			robot.delay(10000);
-			//close Chrome:
-			robot.keyPress(KeyEvent.VK_CONTROL);
-			robot.keyPress(KeyEvent.VK_SHIFT);
-			robot.keyPress(KeyEvent.VK_Q);
-			robot.delay(200);
-			robot.keyRelease(KeyEvent.VK_Q);
-			robot.keyRelease(KeyEvent.VK_CONTROL);
-			robot.keyRelease(KeyEvent.VK_SHIFT);
-
+			acc.setNewGame();
 		}
 
 	}
 
+	static Robot robot;
+	static MyActions acc;
+	static int gamesPlayed = 1;
 
-	static void openAndFarm() throws Exception {
+
+	static void openAndFarm() throws IOException, URISyntaxException, InterceptionException, TimeoutException, InvalidAttributeValueException {
 		acc.openWoO();
-		acc.getToCharacter("Theodox2");
-		acc.startSinglePlayerGame("Apprentice");
+		acc.getToCharacter(character);
+		acc.startSinglePlayerGame(gameLevel);
 		System.out.println("Starting game:");
 		while (true) {
 			acc.playGame();
