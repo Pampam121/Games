@@ -33,7 +33,7 @@ public class BasicActions {
 	// check if mouse was moved, if yes, halts process
 	void checkUserIntervention() throws InterceptionException {
 		if (!lastCoords.equals(MouseInfo.getPointerInfo().getLocation())) {
-			throw new InterceptionException(Interruption.USER);
+			throw new InterceptionException("User Interruption! Mouse was " + MouseInfo.getPointerInfo().getLocation() + " but should be " + lastCoords);
 		}
 	}
 
@@ -43,9 +43,13 @@ public class BasicActions {
 			System.out.println("Kongregate Connection Error!");
 			throw new InterceptionException(Interruption.KONGREGATE);
 		}
-		if (findImageLocation(Pictures.gameLoaded) == null) {
-			throw new InterceptionException(Interruption.INTERNET);
+		if (findImageLocation(Pictures.wooError) != null) {
+			System.out.println("Kongregate Connection Error!");
+			throw new InterceptionException(Interruption.WAROFOMENS);
 		}
+//		if (findImageLocation(Pictures.achievementOn) == null) {
+//			throw new InterceptionException(Interruption.INTERNET);
+//		}
 	}
 
 

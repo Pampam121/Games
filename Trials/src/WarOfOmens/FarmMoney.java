@@ -25,6 +25,7 @@ public class FarmMoney {
 				openAndFarm();
 			}
 			catch (InterceptionException e) {
+				System.out.println(e.getMessage());
 				e.printStackTrace();
 				System.out.println("Waiting 10 mins and starting over");
 			}

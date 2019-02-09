@@ -4,9 +4,10 @@ public class InterceptionException extends Exception {
 
 	/**
 	 * Thrown when User Intercepted or there is a connection problem, and the process needs to be halted.
-	 * There are 3 types:
+	 * There are 4 types:
 	 * User for Mouse Move
 	 * Kongregate for Kongregate disconnection
+	 * War Of Omens for WoO opened elsewhere
 	 * Internet for all other problems
 	 * 
 	 */
@@ -14,12 +15,17 @@ public class InterceptionException extends Exception {
 	public Interruption interruption = null;
 
 	public enum Interruption {
-		USER, KONGREGATE, INTERNET
+		USER, KONGREGATE, WAROFOMENS, INTERNET
 	}
 
 
 	InterceptionException() {
 		super();
+	}
+	
+	InterceptionException(String s) {
+		super(s);
+		interruption = Interruption.USER;
 	}
 
 
@@ -31,6 +37,10 @@ public class InterceptionException extends Exception {
 
 			case KONGREGATE:
 				new InterceptionException("Kongregate Disconnected! Restarting!", intr);
+				break;
+				
+			case WAROFOMENS:
+				new InterceptionException("War of Omens opened elsewhere! Restarting!", intr);
 				break;
 
 			case INTERNET:

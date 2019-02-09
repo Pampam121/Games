@@ -30,18 +30,9 @@ public class Places {
 		System.out.println("Start!");
 		Robot robot = new Robot();
 		MyActions acc = new MyActions(robot);
+		robot.delay(5000);
 
-		while (true) {
-			System.out.println("Start!");
-			try {
-				acc.wait(4000);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Stuff!");
-			}
-			acc.wait(3000);
-		}
+		System.out.println( acc.findImageLocation(Pictures.achievementOn));
 
 
 	}
