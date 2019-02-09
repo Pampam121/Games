@@ -74,7 +74,7 @@ public class MyActions extends BasicActions {
 			clickPicture(Pictures.javaPermissonNeed);
 			wait(2000);
 			clickPicture(Pictures.javaEngedely);
-			wait(1000);
+			wait(3000);
 			System.out.println("Permission given to Java");
 			getToMainScreen();
 			break;
@@ -85,7 +85,7 @@ public class MyActions extends BasicActions {
 			wait(1000);
 			robot.mouseWheel(-1);
 			wait(1000);
-			clickPicture(Pictures.questPopUp);
+			clickPicture(Pictures.newsX);
 			wait(1000);
 			robot.mouseWheel(1);
 			wait(1000);
@@ -244,13 +244,10 @@ public class MyActions extends BasicActions {
 	private void clickAllShop() throws InterceptionException {
 
 		clickCoord(shop1);
-		wait(200);
 
 		clickCoord(shop2);
-		wait(200);
 
 		clickCoord(shop3);
-		wait(200);
 
 		clickCoord(shop4);
 	}
@@ -270,16 +267,14 @@ public class MyActions extends BasicActions {
 
 		while (checkGameEnd()) {
 
+//			clickCoin();
+//			clickCoin();
 			clickCoin();
-			wait(100);
 			clickCoin();
-			wait(100);
 			clickCoin();
-			wait(300);
 
 			clickAllShop();
 
-			wait(1000);
 			clickCoord(endTurn);
 
 			wait(6000);

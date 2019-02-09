@@ -89,7 +89,7 @@ public class BasicActions {
 		checkUserIntervention();
 
 		moveCoord(xCoord, yCoord);
-		wait(500);
+		wait(100);
 
 		robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
 		robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);

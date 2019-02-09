@@ -10,8 +10,8 @@ import javax.naming.directory.InvalidAttributeValueException;
 
 public class FarmMoney {
 
-	static String gameLevel = Pictures.apprentice;
-	static String character = Pictures.theodox;
+	static String gameLevel = Pictures.journeyman;
+	static String character = Pictures.gretta;
 
 
 	public static void main(String[] args) throws Exception {

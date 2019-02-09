@@ -13,9 +13,9 @@ public class Pictures {
 	public static final String newsX = "NewsX";
 	public static final String questPopUp = "DailyPopUp";
 	public static final String questX = "DailyX";
-	public static final String weekendPopUp = "DailyX";
+	public static final String weekendPopUp = "WeekEndPopUp";
 	public static final String homeScreen = "LeftArrow2";
-	public static final String collect = "";
+	public static final String collect = "Collect";
 
 	//connection check
 	public static final String reconnectMe = "ConnectionLost";
