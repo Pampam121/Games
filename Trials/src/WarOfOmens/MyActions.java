@@ -20,6 +20,10 @@ public class MyActions extends BasicActions {
 	private Point shop3;
 	private Point shop4;
 
+	private int coinTimes;
+
+	public int levelUp = 0;
+
 	public MyActions(Robot rob) {
 		super(rob);
 	}
@@ -93,14 +97,14 @@ public class MyActions extends BasicActions {
 			getToMainScreen();
 			break;
 
-		//close weekend pop up
+		// close weekend pop up
 		case Pictures.weekendPopUp:
 			clickPicture(Pictures.weekendPopUp);
 			wait(1000);
 			System.out.println("WeekendPopUp closed");
 			getToMainScreen();
 			break;
-			
+
 		// this is the only way to exit the loop
 		case Pictures.homeScreen:
 			return;
@@ -171,6 +175,8 @@ public class MyActions extends BasicActions {
 		shop2 = calcCoord(theo, arr, sp, "Shop2"); // (2150, 650)
 		shop3 = calcCoord(theo, arr, sp, "Shop3"); // (2150, 800)
 		shop4 = calcCoord(theo, arr, sp, "Shop4"); // (2150, 950)
+
+		coinTimes = Pictures.coinNumber(characterName);
 	}
 
 	private Point calcCoord(Point theo, Point arr, Point sp, String place) throws InvalidAttributeValueException {
@@ -267,11 +273,9 @@ public class MyActions extends BasicActions {
 
 		while (checkGameEnd()) {
 
-//			clickCoin();
-//			clickCoin();
-			clickCoin();
-			clickCoin();
-			clickCoin();
+			for (int i = 0; i < coinTimes; i++) {
+				clickCoin();
+			}
 
 			clickAllShop();
 
@@ -308,6 +312,7 @@ public class MyActions extends BasicActions {
 		if (waitForPictures(Pictures.playAgain, Pictures.levelUp) == Pictures.levelUp) {
 			clickPicture(Pictures.levelUp);
 			System.out.println("Level up!");
+			levelUp++;
 		}
 		waitAndClickPicture(Pictures.playAgain);
 		waitAndClickPicture(Pictures.clickToContinue);
@@ -317,33 +322,24 @@ public class MyActions extends BasicActions {
 	 * Waits 10 mins and closes Chrome
 	 * 
 	 * @throws InterruptedException
+	 * @throws InterceptionException
 	 */
-	public void setNewGame() throws InterruptedException {
+	public void setNewGame() throws InterruptedException, InterceptionException {
 		gameLoaded = false;
 		Thread.sleep(BasicActions.timeOut);
 
-		// close Chrome:
-		robot.keyPress(KeyEvent.VK_ALT);
-		robot.keyPress(KeyEvent.VK_F);
-		robot.delay(200);
-		robot.keyRelease(KeyEvent.VK_F);
-		robot.keyRelease(KeyEvent.VK_ALT);
-		robot.delay(200);
-		robot.keyPress(KeyEvent.VK_I);
-		robot.delay(200);
-		robot.keyRelease(KeyEvent.VK_I);
-		robot.delay(200);
-		robot.keyPress(KeyEvent.VK_I);
-		robot.delay(200);
-		robot.keyRelease(KeyEvent.VK_I);
-		robot.delay(200);
-		robot.keyPress(KeyEvent.VK_ENTER);
-		robot.delay(200);
-		robot.keyRelease(KeyEvent.VK_ENTER);
-		
-		robot.delay(3000);
-		
+		checkUserIntervention();
+		robot.mouseMove(0, 0);
+		robot.mouseMove(110, 100);
+		robot.mouseMove(0, 0);
 		lastCoords = MouseInfo.getPointerInfo().getLocation();
+		robot.delay(1000);
+		checkUserIntervention();
+
+		// close Chrome:
+		clickPicture(Pictures.chromeClose);
+
+		robot.delay(3000);
 
 	}
 
