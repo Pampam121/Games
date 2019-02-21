@@ -12,7 +12,7 @@ import WarOfOmens.InterceptionException.Interruption;
 public class FarmMoney {
 
 	static String gameLevel = Pictures.apprentice;
-	static String character = Pictures.gretta;
+	static String character = Pictures.sisYsadora;
 
 	public static void main(String[] args) throws Exception {
 		robot = new Robot();

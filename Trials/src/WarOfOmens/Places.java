@@ -23,6 +23,7 @@ public class Places {
 		picPoints.put("Shop2", new Point(2150, 650));
 		picPoints.put("Shop3", new Point(2150, 800));
 		picPoints.put("Shop4", new Point(2150, 950));
+		picPoints.put("4PackCard", new Point(280,300));
 	}
 
 
@@ -32,7 +33,8 @@ public class Places {
 		MyActions acc = new MyActions(robot);
 		robot.delay(5000);
 
-		System.out.println( acc.findImageLocation(Pictures.achievementOn));
+		robot.mouseMove(280, 300);
+		System.out.println(acc.findImageLocation(Pictures.continueButton));
 
 
 	}

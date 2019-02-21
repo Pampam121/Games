@@ -27,7 +27,10 @@ public class Pictures {
 	public static final String chromeClose = "chromeX";
 
 	// HomeScreen Navigation
+	public static final String helpIcon = "HelpIcon";
 	public static final String leftArrow = "LeftArrow2";
+	public static final String singlePlayer = "SinglePlayer2";
+	public static final String tournament = "Tournament";
 
 	// Characters
 	public static final String captListrata = "CaptListrata";
@@ -46,11 +49,13 @@ public class Pictures {
 	public static final String calipeth = "Calipeth";
 	public static final String jesmai = "Jemai";
 	public static final String zalasair = "Zalasair";
+	
+	//Tournament Characters
+	public static final String dogeMonteferro = "DogeMonteferro";
+	public static final String shofetDaru = "ShofetDaru";
+	public static final String brigandLucca = "BrigandLucca";
 
 	// Game Levels
-	public static final String singlePlayer = "SinglePlayer2";
-	public static final String tournament = "Tournament";
-
 	public static final String neophyte = "Neophyte";
 	public static final String apprentice = "Apprentice2";
 	public static final String journeyman = "Journeyman";
@@ -62,6 +67,22 @@ public class Pictures {
 	public static final String endTurn = "EndTurn2";
 	public static final String playAgain = "PlayAgain2";
 	public static final String levelUp = "LevelUp";
+	
+	//Tournament
+	public static final String enterTournament = "Enter";
+	public static final String _0Ticket = "";
+	public static final String _1Ticket = "1Ticket";
+	public static final String _2Ticket = "";
+	public static final String _3Ticket = "";
+	public static final String _4Ticket = "";
+	public static final String _5Ticket = "";
+	public static final String heroPack = "HeroPack";
+	public static final String _4Pack = "4Pack";
+	public static final String _5Pack = "5Pack";
+	public static final String _6Pack = "6Pack";
+	public static final String ready = "";
+	public static final String endTurnTournament = "";
+	public static final String continueButton = "Continue";
 
 	public static int coinNumber(String character) throws InvalidAttributeValueException {
 		switch (character) {
@@ -72,7 +93,7 @@ public class Pictures {
 		case cardinalPocchi:
 			return 10;
 		case sisYsadora:
-			return 10;
+			return 6;
 		case liet:
 			return 3;
 		case esra:
@@ -82,7 +103,7 @@ public class Pictures {
 		case babarus:
 			return 3;
 		case valdorian:
-			return 3;
+			return 4;
 		case theodox:
 			return 3;
 		case birondelle:

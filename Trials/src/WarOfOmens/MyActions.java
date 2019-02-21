@@ -70,6 +70,7 @@ public class MyActions extends BasicActions {
 
 		if (findImageLocation(Pictures.tooHigh) != null) {
 			robot.mouseWheel(1);
+			wait(1000);
 		}
 
 		switch (loadedScreenType) {
@@ -241,6 +242,14 @@ public class MyActions extends BasicActions {
 		waitAndClickPicture(gameLevel);
 		waitAndClickPicture(Pictures.clickToContinue);
 
+	}
+	
+	public void startTournament() throws InterceptionException, TimeoutException {
+		waitAndClickPicture(Pictures.tournament);
+		
+		//check if Tournament needed to play, and if so, create deck if needed
+		waitForPictures(Pictures._0Ticket,Pictures._1Ticket,Pictures._2Ticket,Pictures._3Ticket,Pictures._4Ticket,Pictures._5Ticket,Pictures.enterTournament);
+		
 	}
 
 	private void clickCoin() throws InterceptionException {
