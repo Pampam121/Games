@@ -67,6 +67,9 @@ public class Pictures {
 	public static final String endTurn = "EndTurn2";
 	public static final String playAgain = "PlayAgain2";
 	public static final String levelUp = "LevelUp";
+	public static final String victory = "Victory";
+	public static final String defeat = "Defeat";
+	public static final String concede = "Concede";
 	
 	//Tournament
 	public static final String enterTournament = "Enter";
@@ -74,15 +77,25 @@ public class Pictures {
 	public static final String _1Ticket = "1Ticket";
 	public static final String _2Ticket = "";
 	public static final String _3Ticket = "";
-	public static final String _4Ticket = "";
-	public static final String _5Ticket = "";
+	public static final String _4Ticket = "4Ticket";
+	public static final String _5Ticket = "5Ticket";
+	public static final String _6Ticket = "6Ticket";
+	public static final String _7Ticket = "";
+	public static final String _8Ticket = "8Ticket";
+	public static final String _9Ticket = "9Ticket";
 	public static final String heroPack = "HeroPack";
 	public static final String _4Pack = "4Pack";
 	public static final String _5Pack = "5Pack";
 	public static final String _6Pack = "6Pack";
-	public static final String ready = "";
-	public static final String endTurnTournament = "";
+	public static final String ready = "Ready";
+	public static final String endTurnTournament = "EndTurnTournament";
 	public static final String continueButton = "Continue";
+	public static final String playAgainTournament = "PlayAgainTournament";
+	
+	//Pasks
+	public static final String oakPack = "OakPack";
+	public static final String silverPack = "SilverPack";
+	public static final String goldPack = "GoldPack";
 
 	public static int coinNumber(String character) throws InvalidAttributeValueException {
 		switch (character) {

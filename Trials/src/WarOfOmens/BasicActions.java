@@ -6,6 +6,7 @@ import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.util.concurrent.TimeoutException;
 
+import org.sikuli.basics.Settings;
 import org.sikuli.script.FindFailed;
 import org.sikuli.script.ImagePath;
 import org.sikuli.script.Match;
@@ -18,7 +19,7 @@ public class BasicActions {
 
 	Robot robot;
 	Point lastCoords;
-	static final int timeOut = 600000; // 10 mins
+	static int timeOut = 600000; // 10 mins
 	static final int checkInterval = 1000; // in ms
 	boolean gameLoaded = false;
 
@@ -130,6 +131,12 @@ public class BasicActions {
 
 	}
 
+	Point findImageLocation(String image, double minSimilarityValue) {
+		Settings.MinSimilarity = minSimilarityValue;
+		Point pp = findImageLocation(image);
+		Settings.MinSimilarity = 0.7;
+		return pp;
+	}
 
 	Point findImageLocation(String image) {
 

@@ -1,5 +1,6 @@
 package WarOfOmens;
 
+import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
 import java.util.HashMap;
@@ -30,11 +31,13 @@ public class Places {
 	public static void main(String[] args) throws Exception {
 		System.out.println("Start!");
 		Robot robot = new Robot();
-		MyActions acc = new MyActions(robot);
+		GameActions acc = new GameActions(robot);
 		robot.delay(5000);
+		System.out.println(MouseInfo.getPointerInfo().getLocation());
 
-		robot.mouseMove(280, 300);
-		System.out.println(acc.findImageLocation(Pictures.continueButton));
+		acc.moveCoord(280, 300);
+		
+		System.out.println(acc.findImageLocation(Pictures.silverPack));
 
 
 	}

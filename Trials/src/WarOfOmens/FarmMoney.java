@@ -16,7 +16,7 @@ public class FarmMoney {
 
 	public static void main(String[] args) throws Exception {
 		robot = new Robot();
-		acc = new MyActions(robot);
+		acc = new TournamentActions(robot);
 		robot.delay(2000);
 
 		while (true) {
@@ -34,18 +34,27 @@ public class FarmMoney {
 			}
 			// wait 10 mins and start over
 			System.out.println("Waiting 10 mins and starting over");
+			tournament = false;
 			acc.setNewGame();
 		}
 
 	}
 
 	static Robot robot;
-	static MyActions acc;
+	static TournamentActions acc;
 	static int gamesPlayed = 0;
+	static boolean tournament = true;
 
 	static void openAndFarm() throws IOException, URISyntaxException, InterceptionException, TimeoutException,
 			InvalidAttributeValueException {
 		acc.openWoO();
+		if (tournament) {
+			acc.startTournament();
+			while (tournament) {
+				tournament = acc.sortTournament();
+			}
+		}
+
 		acc.getToCharacter(character);
 		acc.startSinglePlayerGame(gameLevel);
 		System.out.println("Starting game:");
@@ -60,6 +69,8 @@ public class FarmMoney {
 
 	static void printError(Exception e) {
 		System.out.println("Games played: " + gamesPlayed);
+		System.out.println("Games won: " + acc.victory);
+		System.out.println("Games lost: " + acc.defeat);
 		System.out.println("Leveled up " + acc.levelUp + " times.");
 		System.out.println("");
 		e.printStackTrace();
