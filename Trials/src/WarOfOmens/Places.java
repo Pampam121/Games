@@ -37,7 +37,7 @@ public class Places {
 
 		acc.moveCoord(280, 300);
 		
-		System.out.println(acc.findImageLocation(Pictures.silverPack));
+		System.out.println(acc.findImageLocation(Pictures.goldPack));
 
 
 	}

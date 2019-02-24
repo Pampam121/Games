@@ -52,7 +52,7 @@ public class TournamentActions extends GameActions {
 		List<String> goldPacks = new ArrayList<String>();
 		goldPacks.add(Pictures.oakPack);
 		goldPacks.add(Pictures.silverPack);
-		goldPacks.add(Pictures.goldPack);
+//		goldPacks.add(Pictures.goldPack);
 
 		List<String> tournamentPictures = new ArrayList<String>();
 		tournamentPictures.add(Pictures.continueButton);
@@ -73,7 +73,7 @@ public class TournamentActions extends GameActions {
 			int origtimeout = timeOut;
 			try {
 				timeOut = 900;
-				waitForPictures(tickets.toArray(new String[tickets.size()]));
+				waitForPictures(0.9, tickets.toArray(new String[tickets.size()]));
 				robot.mouseWheel(-1);
 				wait(1000);
 				clickPicture(Pictures.newsX);

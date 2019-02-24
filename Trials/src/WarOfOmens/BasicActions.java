@@ -130,6 +130,13 @@ public class BasicActions {
 		throw new TimeoutException();
 
 	}
+	
+	String waitForPictures(double minSimilarityValue, String... picture) throws InterceptionException, TimeoutException {
+		Settings.MinSimilarity = minSimilarityValue;
+		String pp = waitForPictures(picture);
+		Settings.MinSimilarity = 0.7;
+		return pp;
+	}
 
 	Point findImageLocation(String image, double minSimilarityValue) {
 		Settings.MinSimilarity = minSimilarityValue;
