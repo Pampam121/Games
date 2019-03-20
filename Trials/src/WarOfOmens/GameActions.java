@@ -67,7 +67,7 @@ public class GameActions extends BasicActions {
 	 */
 	void getToMainScreen() throws InterceptionException, TimeoutException {
 
-		String loadedScreenType = waitForPictures(Pictures.javaPermissonNeed, Pictures.newsPopUp, Pictures.questPopUp,
+		String loadedScreenType = waitForPictures(0.9, Pictures.javaPermissonNeed, Pictures.newsPopUp, Pictures.questPopUp,
 				Pictures.weekendPopUp, Pictures.homeScreen);
 
 		if (findImageLocation(Pictures.tooHigh) != null) {

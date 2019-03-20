@@ -11,13 +11,14 @@ import WarOfOmens.InterceptionException.Interruption;
 
 public class FarmMoney {
 
-	static String gameLevel = Pictures.apprentice;
-	static String character = Pictures.sisYsadora;
+	static String gameLevel = Pictures.grandmaster;
+	static String character = Pictures.theodox;
 
 	public static void main(String[] args) throws Exception {
 		robot = new Robot();
 		acc = new TournamentActions(robot);
 		robot.delay(2000);
+//		tournament = false;
 
 		while (true) {
 			try {
