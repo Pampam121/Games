@@ -5,6 +5,7 @@ import javax.naming.directory.InvalidAttributeValueException;
 public class Pictures {
 
 	// getting in Game
+	public static final String signIn = "SignIn";
 	public static final String woOinKong = "WoOinKong2";
 	public static final String javaPermissonNeed = "JavaDownload";
 	public static final String javaEngedely = "JavaEngedely";
@@ -42,12 +43,12 @@ public class Pictures {
 	public static final String mogesh = "Mogesh";
 	public static final String babarus = "Babarus";
 	public static final String valdorian = "Valdorian";
-	public static final String theodox = "Theodox2";
+	public static final String theodox = "Theodox";
 	public static final String birondelle = "Birondelle";
 	public static final String gretta = "Gretta";
 	public static final String raktabaan = "Raktabaan";
 	public static final String calipeth = "Calipeth";
-	public static final String jesmai = "Jemai";
+	public static final String jesmai = "Jesmai";
 	public static final String zalasair = "Zalasair";
 	
 	//Tournament Characters
@@ -57,7 +58,7 @@ public class Pictures {
 
 	// Game Levels
 	public static final String neophyte = "Neophyte";
-	public static final String apprentice = "Apprentice2";
+	public static final String apprentice = "Apprentice";
 	public static final String journeyman = "Journeyman";
 	public static final String master = "Master";
 	public static final String grandmaster = "Grandmaster";

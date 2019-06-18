@@ -37,9 +37,10 @@ public class GameActions extends BasicActions {
 	 * @throws IOException
 	 * @throws InterceptionException
 	 * @throws TimeoutException
+	 * @throws InterruptedException 
 	 * 
 	 */
-	public void openWoO() throws IOException, URISyntaxException, InterceptionException, TimeoutException {
+	public void openWoO() throws IOException, URISyntaxException, InterceptionException, TimeoutException, InterruptedException {
 		// open WarOfOmens in Chrome
 		if (Desktop.isDesktopSupported()) {
 			Desktop.getDesktop().browse(new URI("https://www.kongregate.com/games/FifthColumnGames/war-of-omens"));
@@ -64,11 +65,14 @@ public class GameActions extends BasicActions {
 	 * 
 	 * @throws InterceptionException
 	 * @throws TimeoutException
+	 * @throws InterruptedException 
+	 * @throws URISyntaxException 
+	 * @throws IOException 
 	 */
-	void getToMainScreen() throws InterceptionException, TimeoutException {
+	void getToMainScreen() throws InterceptionException, TimeoutException, InterruptedException, IOException, URISyntaxException {
 
-		String loadedScreenType = waitForPictures(0.9, Pictures.javaPermissonNeed, Pictures.newsPopUp, Pictures.questPopUp,
-				Pictures.weekendPopUp, Pictures.homeScreen);
+		String loadedScreenType = waitForPictures(0.9, Pictures.javaPermissonNeed, Pictures.newsPopUp,
+				Pictures.questPopUp, Pictures.weekendPopUp, Pictures.homeScreen, Pictures.signIn);
 
 		if (findImageLocation(Pictures.tooHigh) != null) {
 			robot.mouseWheel(1);
@@ -76,12 +80,20 @@ public class GameActions extends BasicActions {
 		}
 
 		switch (loadedScreenType) {
-		// in case permission needed, give it
+		// if we need to sign in, sign in and reload
+		case Pictures.signIn:
+			waitAndClickPicture(Pictures.signIn);
+			wait(2000);
+			setNewGame();
+			openWoO();
+			return;
+
+			// in case permission needed, give it
 		case Pictures.javaPermissonNeed:
 			clickPicture(Pictures.javaPermissonNeed);
 			wait(2000);
 			clickPicture(Pictures.javaEngedely);
-			wait(3000);
+			wait(10000);
 			System.out.println("Permission given to Java");
 			getToMainScreen();
 			break;
@@ -326,7 +338,10 @@ public class GameActions extends BasicActions {
 			System.out.println("Victory/defeat not found!");
 		}
 		waitAndClickPicture(Pictures.playAgain);
-		waitAndClickPicture(Pictures.clickToContinue);
+		while (waitForPictures(Pictures.clickToContinue, Pictures.endTurn) == Pictures.clickToContinue) {
+			clickPicture(Pictures.clickToContinue);
+		}
+
 	}
 
 	/**
@@ -337,7 +352,7 @@ public class GameActions extends BasicActions {
 	 */
 	public void setNewGame() throws InterruptedException, InterceptionException {
 		gameLoaded = false;
-		Thread.sleep(BasicActions.timeOut);
+		Thread.sleep(60000); // 1 mins
 
 		checkUserIntervention();
 		robot.mouseMove(0, 0);

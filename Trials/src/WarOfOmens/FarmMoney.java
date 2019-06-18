@@ -29,13 +29,14 @@ public class FarmMoney {
 				if (e.interruption == Interruption.USER) {
 					return;
 				}
+				Thread.sleep(1200000); //20 mins
 
-			} catch (TimeoutException e) {
+			} catch (Exception e) {
 				printError(e);
 			}
-			// wait 10 mins and start over
-			System.out.println("Waiting 10 mins and starting over");
-			tournament = false;
+			// wait 1 mins and start over
+			System.out.println("Waiting 1 mins and starting over");
+			tournament = true;
 			acc.setNewGame();
 		}
 
@@ -47,7 +48,7 @@ public class FarmMoney {
 	static boolean tournament = true;
 
 	static void openAndFarm() throws IOException, URISyntaxException, InterceptionException, TimeoutException,
-			InvalidAttributeValueException {
+			InvalidAttributeValueException, InterruptedException {
 		acc.openWoO();
 		if (tournament) {
 			acc.startTournament();
@@ -63,6 +64,9 @@ public class FarmMoney {
 			acc.playGame();
 			gamesPlayed++;
 			System.out.println("Games played " + gamesPlayed + "\r");
+			if(gamesPlayed % 1000 == 0) {
+				throw new TimeoutException("Time to restart game");
+			}
 			acc.startPlayAgain();
 
 		}
