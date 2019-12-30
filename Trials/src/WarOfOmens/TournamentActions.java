@@ -35,13 +35,13 @@ public class TournamentActions extends GameActions {
 
 	public boolean sortTournament() throws InterceptionException, TimeoutException {
 		List<String> tickets = new ArrayList<String>();
-//		tickets.add(Pictures._0Ticket);
+		tickets.add(Pictures._0Ticket);
 		tickets.add(Pictures._1Ticket);
-//		tickets.add(Pictures._2Ticket);
-//		tickets.add(Pictures._3Ticket);
+		tickets.add(Pictures._2Ticket);
+		tickets.add(Pictures._3Ticket);
 		tickets.add(Pictures._4Ticket);
-		tickets.add(Pictures._5Ticket);
-		tickets.add(Pictures._6Ticket);
+//		tickets.add(Pictures._5Ticket);
+//		tickets.add(Pictures._6Ticket);
 
 		List<String> tourneyPacks = new ArrayList<String>();
 		tourneyPacks.add(Pictures.heroPack);

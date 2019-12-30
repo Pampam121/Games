@@ -74,14 +74,14 @@ public class Pictures {
 	
 	//Tournament
 	public static final String enterTournament = "Enter";
-	public static final String _0Ticket = "";
+	public static final String _0Ticket = "0Ticket";
 	public static final String _1Ticket = "1Ticket";
-	public static final String _2Ticket = "";
-	public static final String _3Ticket = "";
+	public static final String _2Ticket = "2Ticket";
+	public static final String _3Ticket = "3Ticket";
 	public static final String _4Ticket = "4Ticket";
 	public static final String _5Ticket = "5Ticket";
 	public static final String _6Ticket = "6Ticket";
-	public static final String _7Ticket = "";
+	public static final String _7Ticket = "7Ticket";
 	public static final String _8Ticket = "8Ticket";
 	public static final String _9Ticket = "9Ticket";
 	public static final String heroPack = "HeroPack";
