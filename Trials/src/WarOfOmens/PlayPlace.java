@@ -14,11 +14,7 @@ public class PlayPlace {
 		robot.delay(2000);
 
 		acc.moveCoord(220, 300);
-		while (true) {
-			acc.sortTournament();
-//			acc.playTournament();
-//			acc.startNewTournamentGame();
-		}
+		acc.setNewGame();
 
 	}
 

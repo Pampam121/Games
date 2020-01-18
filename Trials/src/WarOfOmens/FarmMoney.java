@@ -26,6 +26,7 @@ public class FarmMoney {
 				openAndFarm();
 			} catch (InterceptionException e) {
 				printError(e);
+//				acc.moveCoord(220, 300);
 				if (e.interruption == Interruption.USER) {
 					return;
 				}
@@ -34,10 +35,12 @@ public class FarmMoney {
 			} catch (Exception e) {
 				printError(e);
 			}
-			// wait 1 mins and start over
+			
+			// wait 1 mins and start over chrome x location: [x=1345,y=16]
 			System.out.println("Waiting 1 mins and starting over");
-			tournament = true;
 			acc.setNewGame();
+			tournament = true;
+			
 		}
 
 	}

@@ -352,8 +352,15 @@ public class GameActions extends BasicActions {
 	 */
 	public void setNewGame() throws InterruptedException, InterceptionException {
 		gameLoaded = false;
+		
+		robot.delay(3000);
+		checkUserIntervention();
+		
+		// close Chrome:
+		clickPicture(Pictures.chromeClose);
+		
 		Thread.sleep(60000); // 1 mins
-
+		
 		checkUserIntervention();
 		robot.mouseMove(0, 0);
 		robot.mouseMove(110, 100);
@@ -361,11 +368,6 @@ public class GameActions extends BasicActions {
 		lastCoords = MouseInfo.getPointerInfo().getLocation();
 		robot.delay(1000);
 		checkUserIntervention();
-
-		// close Chrome:
-		clickPicture(Pictures.chromeClose);
-
-		robot.delay(3000);
 
 	}
 
